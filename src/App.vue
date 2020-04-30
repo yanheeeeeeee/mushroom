@@ -16,4 +16,7 @@
 
 <style>
     /*每个页面公共css */
+    body{
+        background: #f8f8f8;
+    }
 </style>
