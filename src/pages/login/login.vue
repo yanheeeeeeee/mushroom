@@ -5,10 +5,16 @@
     <view>
       <img class="tips" src="@/static/images/login_tips@2x.png" alt />
     </view>
-    <button class="btn_login" open-type="getUserInfo" @getuserinfo="wxlogin">
+    <button
+      class="btn_login"
+      open-type="getUserInfo"
+      plain
+      hover-class="none"
+      @getuserinfo="wxlogin"
+    >
       <img src="@/static/images/wx_login@2x.png" alt />
     </button>
-    <text class="phone_login">手机号登录</text>
+    <button class="phone_login" hover-class="none" plain @click="toPhoneLogin">手机号登录</button>
     <text class="bottom_tips">Copyright@2020蘑菇在线</text>
   </view>
 </template>
@@ -16,23 +22,40 @@
 <script>
 export default {
   methods: {
+    // 使用微信登录
     wxlogin() {
       uni.login({
         provider: "weixin",
         success: function(res) {
           console.log(res);
+          uni.setStorageSync("code", res.code);
           uni.showToast({
             title: "正在登录...",
             icon: "loading",
             duration: 2000
           });
           setTimeout(() => {
-            console.log("1111");
             uni.switchTab({
               url: "/pages/home/home"
             });
           }, 1000);
         }
+      });
+    },
+
+    // 跳转至手机号登录
+    toPhoneLogin() {
+      uni.navigateTo({
+        url: "/pages/phone-login/phone-login"
+      });
+    }
+  },
+
+  // 打开小程序检查是否已登录, 是则跳转至首页
+  onShow() {
+    if (uni.getStorageSync("code")) {
+      uni.switchTab({
+        url: "/pages/home/home"
       });
     }
   }
@@ -68,10 +91,6 @@ export default {
     padding: 0;
     border: none;
 
-    &::after {
-      border: none;
-    }
-
     img {
       width: 100%;
       height: 100%;
@@ -81,6 +100,7 @@ export default {
   .phone_login {
     font-size: 32rpx;
     margin-top: 40rpx;
+    border: none;
   }
 
   .bottom_tips {

@@ -7,6 +7,12 @@
 			}
 		},
 		{
+			"path": "pages/phone-login/phone-login",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
 			"path": "pages/home/home",
 			"style": {}
 		},
